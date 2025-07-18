@@ -4,26 +4,29 @@
 
 ```
 Open-Card-Preapproval-Tool/
-├── README.md                 # Project documentation
-├── CHANGELOG.md             # Version history
-├── DIRECTORY_STRUCTURE.md   # Future structure planning
-├── QUICK_START.md           # This file
-├── requirements.txt         # Python dependencies
-├── run_scraper.py          # Main script to run scraper
-├── run_extractor.py        # Main script to run extractor
-├── src/                    # Source code
+├── README.md
+├── CHANGELOG.md
+├── DIRECTORY_STRUCTURE.md
+├── QUICK_START.md
+├── requirements.txt
+├── run_scraper.py
+├── run_extractor.py
+├── src/
 │   ├── __init__.py
-│   ├── scrapers/          # Data collection
+│   ├── scrapers/
 │   │   ├── __init__.py
 │   │   └── reddit_scraper.py
-│   └── extractors/        # Data processing
+│   └── extractors/
 │       ├── __init__.py
 │       ├── llm_extractor.py
-│       └── rule_extractor.py
-├── data/                   # Data storage
-│   ├── raw/               # Raw scraped data
-│   └── processed/         # Cleaned data
-└── notebooks/             # Jupyter notebooks
+│       ├── llm_filter.py
+│       ├── rule_extractor.py
+│       └── strict_filter.py
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── legacy/
+└── notebooks/
     └── data_exploration.ipynb
 ```
 
@@ -61,7 +64,7 @@ This will:
 - Save data to `data/raw/freedom_unlimited_approval_data_YYYYMMDD_HHMMSS.csv`
 - Include metadata: Source, Card_Name, Scraped_At
 
-### 4. Run the Extractor (Coming Soon)
+### 4. Run the Extractor (if implemented)
 ```bash
 # Run the LLM extractor
 python run_extractor.py
@@ -73,29 +76,13 @@ python run_extractor.py
 jupyter notebook notebooks/data_exploration.ipynb
 ```
 
-## Key Improvements Made
-
-1. **Modular Structure**: Code organized into `src/scrapers/` and `src/extractors/`
-2. **Proper Data Organization**: Raw data goes to `data/raw/`, processed to `data/processed/`
-3. **Timestamped Files**: Each scrape gets a unique timestamp
-4. **Metadata Tracking**: Source, card name, and scrape time included
-5. **Easy Execution**: Simple `run_scraper.py` script
-6. **Future-Ready**: Structure supports adding more scrapers and extractors
-
-## Next Steps
-
-1. **Add More Cards**: Expand beyond Freedom Unlimited
-2. **Add More Sources**: Forums, review sites, social media
-3. **Improve Extraction**: Better LLM prompts and validation
-4. **Add FastAPI Backend**: For API endpoints
-5. **Add Database**: Supabase integration
-6. **Add Frontend**: React + Tailwind interface
-
 ## File Descriptions
 
 - `run_scraper.py`: Main entry point for data collection
-- `run_extractor.py`: Main entry point for data processing
-- `src/scrapers/reddit_scraper.py`: Reddit-specific scraping logic
+- `run_extractor.py`: Main entry point for data processing (if implemented)
+- `src/scrapers/reddit_scraper.py`: Reddit scraping logic
 - `src/extractors/llm_extractor.py`: LLM-powered data extraction
 - `src/extractors/rule_extractor.py`: Rule-based data extraction
+- `src/extractors/llm_filter.py`: LLM-based content filtering
+- `src/extractors/strict_filter.py`: Strict content filtering
 - `notebooks/data_exploration.ipynb`: Data analysis and visualization 
