@@ -26,8 +26,10 @@ Open-Card-Preapproval-Tool/
 │   │   └── reddit_scraper.py
 │   └── extractors/
 │       ├── __init__.py
+│       ├── comprehensive_dataset.py
 │       ├── llm_extractor.py
 │       ├── llm_filter.py
+│       ├── llm_verification.py
 │       ├── rule_extractor.py
 │       └── strict_filter.py
 ├── data/
@@ -51,10 +53,12 @@ See QUICK_START.md for step-by-step instructions.
 ## File Descriptions
 
 - `run_scraper.py`: Main entry point for data collection
-- `run_extractor.py`: Main entry point for data processing (if implemented)
+- `run_extractor.py`: Main entry point for data processing pipeline
 - `src/scrapers/reddit_scraper.py`: Reddit scraping logic
-- `src/extractors/llm_extractor.py`: LLM-powered data extraction
 - `src/extractors/rule_extractor.py`: Rule-based data extraction
+- `src/extractors/llm_extractor.py`: LLM-powered data extraction
+- `src/extractors/comprehensive_dataset.py`: Create complete dataset with all features
+- `src/extractors/llm_verification.py`: Future LLM verification and quality control
 - `src/extractors/llm_filter.py`: LLM-based content filtering
 - `src/extractors/strict_filter.py`: Strict content filtering
 - `notebooks/data_exploration.ipynb`: Data analysis and visualization
@@ -69,6 +73,7 @@ This is a personal project currently in POC phase. Future contributions welcome 
 
 - Multi-source scraping (forums, review sites, social media)
 - Modular scraper architecture for multiple cards and sources
+- LLM-powered data verification and correction (review extracted fields, suggest missing data, quality scoring)
 - FastAPI backend and Supabase database
 - React + Tailwind frontend
 - CI/CD, Docker, and production deployment

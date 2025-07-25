@@ -30,7 +30,7 @@ Open-Card-Preapproval-Tool/
     └── data_exploration.ipynb
 ```
 
-## How to Use
+## Complete Data Processing Workflow
 
 ### 1. Setup Environment
 ```bash
@@ -50,39 +50,61 @@ REDDIT_APP_SECRET=your_reddit_app_secret
 REDDIT_APP_NAME=your_app_name
 ```
 
-### 3. Run the Scraper
+### 3. Scrape Reddit Data
 ```bash
-# Activate virtual environment
-source venv/bin/activate
-
 # Run the scraper
 python run_scraper.py
 ```
+This creates: `data/raw/freedom_unlimited_approval_data_YYYYMMDD_HHMMSS.csv`
 
-This will:
-- Scrape Freedom Unlimited posts from r/CreditCards
-- Save data to `data/raw/freedom_unlimited_approval_data_YYYYMMDD_HHMMSS.csv`
-- Include metadata: Source, Card_Name, Scraped_At
-
-### 4. Run the Extractor (if implemented)
+### 4. Extract Structured Data
 ```bash
-# Run the LLM extractor
+# Run the complete extraction pipeline
 python run_extractor.py
 ```
 
-### 5. Analyze Data
+This runs:
+1. **Rule-based extraction** → `data/processed/rule_extracted_data_YYYYMMDD_HHMMSS.csv`
+2. **LLM-based extraction** → `data/processed/llm_extracted_data_YYYYMMDD_HHMMSS.csv` (if Ollama is running)
+3. **Data preparation** → `data/processed/model_ready_data_YYYYMMDD_HHMMSS.csv`
+
+### 5. Create Comprehensive Dataset (Optional)
+```bash
+# Create dataset with original posts and all extracted features
+python src/extractors/comprehensive_dataset.py
+```
+
+This creates: `data/processed/comprehensive_dataset_YYYYMMDD_HHMMSS.csv`
+
+### 6. Analyze Data
 ```bash
 # Open Jupyter notebook
 jupyter notebook notebooks/data_exploration.ipynb
 ```
 
+## Data Flow
+
+1. **Scraping**: Reddit posts → `data/raw/` (CSV with Title, URL, Body, Source, Card_Name, Scraped_At)
+2. **Rule Extraction**: Raw posts → `data/processed/` (extracts Income, Credit Score, Approval Amount using regex)
+3. **LLM Extraction**: Rule-extracted data → `data/processed/` (fills missing fields using Mistral LLM)
+4. **Analysis**: Processed data → Insights via Jupyter notebook
+
 ## File Descriptions
 
 - `run_scraper.py`: Main entry point for data collection
-- `run_extractor.py`: Main entry point for data processing (if implemented)
+- `run_extractor.py`: Main entry point for data processing pipeline
 - `src/scrapers/reddit_scraper.py`: Reddit scraping logic
-- `src/extractors/llm_extractor.py`: LLM-powered data extraction
-- `src/extractors/rule_extractor.py`: Rule-based data extraction
+- `src/extractors/rule_extractor.py`: Rule-based field extraction (regex patterns)
+- `src/extractors/llm_extractor.py`: LLM-powered data extraction (requires Ollama)
 - `src/extractors/llm_filter.py`: LLM-based content filtering
 - `src/extractors/strict_filter.py`: Strict content filtering
-- `notebooks/data_exploration.ipynb`: Data analysis and visualization 
+- `notebooks/data_exploration.ipynb`: Data analysis and visualization
+
+## Extracted Fields
+
+- **Income**: Annual income (numeric)
+- **Credit Score**: FICO score (3-digit number)
+- **Approval Amount**: Credit limit (numeric)
+- **Age**: User age (numeric, LLM only)
+- **Credit History Length**: Length in months/years (numeric, LLM only)
+- **Hard Pulls Count**: Recent inquiries (numeric, LLM only) 

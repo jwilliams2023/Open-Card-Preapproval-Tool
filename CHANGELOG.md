@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Expand to multiple credit cards
 - Add multiple data sources (forums, review sites, social media)
 - Implement automated data validation
+- Add LLM-powered data verification and correction
 - Add FastAPI backend
 - Integrate Supabase database
 - Create React frontend

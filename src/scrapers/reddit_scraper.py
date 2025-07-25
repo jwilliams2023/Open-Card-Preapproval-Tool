@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 import os
 from datetime import datetime
 
-def scrape_freedom_unlimited_posts():
-    """Scrape Freedom Unlimited approval/denial posts from Reddit"""
+def scrape_freedom_cards_posts():
+    """Scrape Freedom Unlimited and Freedom Flex approval/denial posts from Reddit"""
     
     # Load environment variables
     load_dotenv()
@@ -20,7 +20,9 @@ def scrape_freedom_unlimited_posts():
 
     subreddit = reddit.subreddit('CreditCards')
 
+    # Search phrases for both Freedom cards
     search_phrases = [
+        # Freedom Unlimited
         '"Freedom Unlimited" approved',
         '"Freedom Unlimited" denied',
         '"Freedom Unlimited" approval',
@@ -31,7 +33,26 @@ def scrape_freedom_unlimited_posts():
         'CFU denied',
         'CFU approval',
         'CFU rejection',
-        'CFU reject'
+        'CFU reject',
+        
+        # Freedom Flex
+        '"Freedom Flex" approved',
+        '"Freedom Flex" denied',
+        '"Freedom Flex" approval',
+        '"Freedom Flex" instant approval',
+        '"Freedom Flex" rejection',
+        '"Freedom Flex" reject',
+        'CFF approved',
+        'CFF denied',
+        'CFF approval',
+        'CFF rejection',
+        'CFF reject',
+        
+        # Generic Freedom searches
+        'Chase Freedom approved',
+        'Chase Freedom denied',
+        'Chase Freedom approval',
+        'Chase Freedom rejection'
     ]
 
     seen_post_ids = set()
@@ -41,7 +62,7 @@ def scrape_freedom_unlimited_posts():
     
     # Generate filename with timestamp
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    filename = f'data/raw/freedom_unlimited_approval_data_{timestamp}.csv'
+    filename = f'data/raw/freedom_cards_approval_data_{timestamp}.csv'
 
     with open(filename, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
@@ -58,8 +79,21 @@ def scrape_freedom_unlimited_posts():
                 body_lower = post.selftext.lower()
                 combined_text = f"{title_lower} {body_lower}"
 
-                # Card mention keywords
-                card_keywords = ['freedom unlimited', 'cfu']
+                # Card detection logic - be more strict about Freedom cards only
+                card_detected = None
+                
+                # Check for Freedom Unlimited (exclude Sapphire mentions)
+                if ('freedom unlimited' in combined_text or 'cfu' in combined_text) and 'sapphire' not in combined_text:
+                    card_detected = 'Freedom Unlimited'
+                
+                # Check for Freedom Flex (only if Unlimited not found and no Sapphire)
+                elif card_detected is None and ('freedom flex' in combined_text or 'cff' in combined_text) and 'sapphire' not in combined_text:
+                    card_detected = 'Freedom Flex'
+                
+                # Generic Freedom only if no specific card and no Sapphire
+                elif card_detected is None and 'freedom' in combined_text and 'sapphire' not in combined_text:
+                    if 'unlimited' not in combined_text and 'flex' not in combined_text:
+                        card_detected = 'Freedom (Generic)'
 
                 # Approval/denial language
                 approval_keywords = [
@@ -73,38 +107,29 @@ def scrape_freedom_unlimited_posts():
                 # Check if card mention and approval/denial keywords are near each other
                 relevant = False
 
-                for keyword in card_keywords:
-                    idx_title = title_lower.find(keyword)
-                    idx_body = body_lower.find(keyword)
+                if card_detected:
+                    # Check if approval/denial keywords are present
+                    if any(kw in combined_text for kw in approval_keywords):
+                        relevant = True
 
-                    if idx_title != -1:
-                        snippet = title_lower[max(0, idx_title - 50): idx_title + 50]
-                        if any(kw in snippet for kw in approval_keywords):
-                            relevant = True
-
-                    if idx_body != -1:
-                        snippet = body_lower[max(0, idx_body - 50): idx_body + 50]
-                        if any(kw in snippet for kw in approval_keywords):
-                            relevant = True
-
-                if relevant:
+                if relevant and card_detected:
                     writer.writerow([
                         post.title, 
                         post.url, 
                         post.selftext,
                         'Reddit',
-                        'Freedom Unlimited',
+                        card_detected,
                         datetime.now().isoformat()
                     ])
-                    print(f"Saved post: {post.title}")
+                    print(f"Saved post: {post.title} ({card_detected})")
 
     print(f"Finished. Results saved to {filename}")
     return filename
 
 def main():
     """Main function to run the scraper"""
-    print("Starting Reddit scraper for Freedom Unlimited posts...")
-    filename = scrape_freedom_unlimited_posts()
+    print("Starting Reddit scraper for Freedom cards (Unlimited + Flex)...")
+    filename = scrape_freedom_cards_posts()
     print(f"Scraping completed. Data saved to: {filename}")
 
 if __name__ == "__main__":

@@ -10,3 +10,6 @@ __pycache__/
 
 # Ignore all CSV files
 *.csv
+
+# Ignore LLM context file (for assistant use only)
+LLM_README.md

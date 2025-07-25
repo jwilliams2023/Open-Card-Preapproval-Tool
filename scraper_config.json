@@ -1,0 +1,60 @@
+
+{
+  "subreddits": [
+    "CreditCards",
+    "Chase",
+    "churning",
+    "personalfinance"
+  ],
+  "search_phrases": [
+    "\"Freedom Unlimited\" approved",
+    "\"Freedom Unlimited\" denied",
+    "\"Freedom Unlimited\" preapproved",
+    "\"Freedom Unlimited\" pre-approval",
+    "CFU approved",
+    "CFU denied",
+    "CFU preapproved",
+    "CFU pre-approval",
+    
+    "\"Freedom Flex\" approved",
+    "\"Freedom Flex\" denied",
+    "\"Freedom Flex\" preapproved",
+    "\"Freedom Flex\" pre-approval",
+    "CFF approved",
+    "CFF denied",
+    "CFF preapproved",
+    "CFF pre-approval",
+    
+    "Chase Freedom approved",
+    "Chase Freedom denied",
+    "Chase Freedom preapproved",
+    "Freedom approved",
+    "Freedom denied",
+    "Freedom preapproved",
+
+    "Freedom Unlimited application",
+    "Freedom Flex application",
+    "CFU application",
+    "CFF application",
+    "Chase Freedom application",
+
+    "Freedom Unlimited status",
+    "Freedom Flex status",
+    "CFU status",
+    "CFF status",
+
+    "Freedom Unlimited credit limit",
+    "Freedom Flex credit limit",
+    "CFU credit limit",
+    "CFF credit limit",
+
+    "Freedom Unlimited income",
+    "Freedom Flex income",
+    "CFU income",
+    "CFF income",
+    "Freedom Unlimited credit score",
+    "Freedom Flex credit score",
+    "CFU credit score",
+    "CFF credit score"
+  ]
+}
