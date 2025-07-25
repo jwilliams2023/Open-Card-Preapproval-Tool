@@ -13,3 +13,5 @@ __pycache__/
 
 # Ignore LLM context file (for assistant use only)
 LLM_README.md
+
+.vscode/
