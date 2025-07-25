@@ -90,11 +90,7 @@ Respond only with valid JSON.
             result_text = response.json()["response"]
             # Clean up the response to extract JSON
             result_text = result_text.strip()
-            if result_text.startswith("```json"):
-                result_text = result_text[7:]
-            if result_text.endswith("```"):
-                result_text = result_text[:-3]
-            result_text = result_text.strip()
+            result_text = result_text.removeprefix("```json").removeprefix("```").removesuffix("```").strip()
             
             try:
                 result = json.loads(result_text)
