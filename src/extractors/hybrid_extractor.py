@@ -89,7 +89,6 @@ Respond only with valid JSON.
         if response.status_code == 200:
             result_text = response.json()["response"]
             # Clean up the response to extract JSON
-            result_text = result_text.strip()
             result_text = result_text.removeprefix("```json").removeprefix("```").removesuffix("```").strip()
             
             try:
